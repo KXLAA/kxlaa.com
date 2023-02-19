@@ -1,3 +1,5 @@
+import useSwr from "swr";
+
 import { Footer } from "@/components/common/Footer";
 import { Layout } from "@/components/common/Layout";
 import { Experiments } from "@/components/home/Experiments";
@@ -15,6 +17,15 @@ export type HomePageProps = {
 };
 
 export function HomePage(props: HomePageProps) {
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+  const { data, error, isLoading } = useSwr(
+    `/api/metadata/https://www.nartefacts.com/`,
+    fetcher
+  );
+
+  console.log(data, error, isLoading);
+
   const { posts, experiments } = props;
   return (
     <Layout className="flex flex-col justify-center max-w-xl gap-4 px-4 py-4 text-base md:px-10 md:py-16 md:gap-8 md:text-xl font-extralight">
